@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Hourglass Timer</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #timer { font-size: 48px; margin: 20px; }
+        button { font-size: 24px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>Pomodoro Hourglass Timer</h1>
+    <div id="timer">25:00</div>
+    <button id="startBtn">Start</button>
+    <script>
+        let timeLeft = 1500;
+        let timerId;
+
+        function startTimer() {
+            timerId = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    alert('Pomodoro session completed!');
+                } else {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            }, 1000);
+        }
+
+        document.getElementById('startBtn').addEventListener('click', startTimer);
+    </script>
+</body>
+</html>
