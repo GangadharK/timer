@@ -2,274 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pomodoro Hourglass Timer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
     <style>
-        /* Pomodoro Theme Variables */
-        :root {
-            --pomodoro: hsl(223, 25%, 40%);
-            --shortBreak: hsl(48, 23%, 40%);
-            --longBreak: hsl(105, 16%, 40%);
-        }
-        
-        body {
-            background-color: var(--pomodoro);
-            color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-            transition: background-color 0.5s ease;
-        }
-
-        /* SVG Hourglass Styles */
-        #hourglass, #hourglass #upper-fill-clip, #hourglass #lower-fill-clip {
-            fill: #000000;
-        }
-
-        /* Basic Layout & Button Styles */
-        .controls, .timer-display {
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        button {
-            padding: 10px 15px;
-            margin: 0 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
-        button.active {
-            font-weight: bold;
-            box-shadow: inset 0px 3px 5px rgba(0,0,0,0.3);
-        }
-
-        #js-btn {
-            padding: 10px 30px;
-            font-size: 18px;
-            text-transform: uppercase;
-        }
-
-        .clock {
-            font-size: 64px;
-            font-weight: bold;
-        }
-
-        progress {
-            width: 100%;
-            max-width: 300px;
-            height: 20px;
-            margin-bottom: 20px;
-        }
+        body { font-family: Arial, sans-serif; }
+        .timer { font-size: 2rem; margin: 20px; }
+        button { padding: 10px 20px; font-size: 1rem; }
     </style>
 </head>
 <body>
-
-    <!-- Pomodoro Mode Buttons -->
-    <div id="js-mode-buttons" class="controls">
-        <button data-mode="pomodoro" class="active">Pomodoro</button>
-        <button data-mode="shortBreak">Short Break</button>
-        <button data-mode="longBreak">Long Break</button>
-    </div>
-
-    <!-- SVG Hourglass Animation -->
-    <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="212.17653" height="310" viewBox="0 0 212.17653 310" id="hourglass">
-        <defs>
-            <clipPath id="flowdown">
-                <path d="m 153.09976,190.92975 c 22.09717,217.28036 179.31249,274.21877 197.89215,327.9765 l 62.9374,0 c 18.72854,-53.17156 176.30873,-105.92478 197.9976,-327.99097" style="stroke-width:0" />
-            </clipPath>
-            <clipPath id="fillup">
-                <path d="M 296.23029,608.69417 C 236.36177,663.1914 150.52311,748.96721 150.52311,928.875 l 231.9375,0 231.9375,0 c 0,-181.67405 -83.81727,-266.73823 -143.5691,-320.06035" style="stroke-width:0" />
-            </clipPath>
-        </defs>
-        <g transform="matrix(0.3117516,0,0,0.3117516,-13.144444,-11.10242)" id="layer1">
-            <g transform="translate(14,-26)" id="g4027">
-                <rect width="648.51801" height="43.605999" x="44.201607" y="-1039.9561" transform="scale(1,-1)" id="rect3782" style="fill:#000000;fill-opacity:1;stroke:none" />
-                <rect width="579.82764" height="60" x="78.546791" y="-999.65149" transform="scale(1,-1)" id="rect3784" style="fill:#000000;fill-opacity:1;stroke:none" />
-            </g>
-            <path d="m 150.53125,138.59375 c 0,276.24024 202.375,328.98438 202.375,390.46875 0,1.83297 -1.12281,3.21907 -0.71875,4.6875 -0.40197,1.4611 0.71875,2.83465 0.71875,4.65625 0,59.91583 -202.375,114.22851 -202.375,390.46875 l 231.9375,0 231.9375,0 c 0,-282.29589 -202.375,-331.32933 -202.375,-390.46875 0,-1.8216 1.12072,-3.19515 0.71875,-4.65625 0.40406,-1.46843 -0.71875,-2.85453 -0.71875,-4.6875 0,-61.32924 202.375,-108.17286 202.375,-390.46875 l -231.9375,0 z" id="path3788" style="fill:none;stroke:#000000;stroke-width:30;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-            <g transform="translate(14,-26)" id="g4043">
-                <rect width="648.51801" height="43.605999" x="44.201607" y="77.651443" id="rect4033" style="fill:#000000;fill-opacity:1;stroke:none" />
-                <rect width="579.82764" height="60" x="78.546791" y="117.95601" id="rect4035" style="fill:#000000;fill-opacity:1;stroke:none" />
-            </g>
-            <g clip-path="url(#flowdown)">
-                <rect width="744.09448" height="1052.3622" x="0" y="519" id="upper-fill-clip" />
-            </g>
-            <g clip-path="url(#fillup)" >
-                <rect width="744.09448" height="1052.3622" x="0" y="0" id="lower-fill-clip" />
-            </g>
-            <animate id="aniFlowdown" xlink:href="#upper-fill-clip" attributeName="y" from ="190" to="519" dur="10s" begin="0;aniFlip.end" />
-            <animate id="aniFillup" xlink:href="#lower-fill-clip" attributeName="y" from ="911" to="610" dur="10s" begin="0;aniFlowdown.begin" />
-            <animateTransform id="aniFlip" xlink:href="#hourglass" attributeName="transform" type="rotate" from="0 0 0" to="180 0 0" begin="aniFlowdown.end-0.2" dur="0.2s" />
-        </g>
-    </svg>
-
-    <!-- Timer and Progress Bar -->
-    <div class="timer-display">
-        <div class="clock">
-            <span id="js-minutes">20</span>:<span id="js-seconds">00</span>
-        </div>
-    </div>
-    <progress id="js-progress" value="0"></progress>
-    
-    <!-- Action Button -->
-    <button id="js-btn" data-action="start">Start</button>
-
-    <!-- Hidden Audio Sources for Notifications -->
-    <audio id="audio-pomodoro" src="https://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg" data-sound="pomodoro"></audio>
-    <audio id="audio-shortBreak" src="https://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg" data-sound="shortBreak"></audio>
-    <audio id="audio-longBreak" src="https://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg" data-sound="longBreak"></audio>
+    <div class="timer">00:00:00</div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
 
     <script>
-        const timer = {
-            pomodoro: 20,
-            shortBreak: 5,
-            longBreak: 15,
-            longBreakInterval: 4,
-            sessions: 0,
-        };
-
-        let interval;
-
-        const mainButton = document.getElementById('js-btn');
-        const modeButtons = document.querySelector('#js-mode-buttons');
-
-        mainButton.addEventListener('click', () => {
-            const { action } = mainButton.dataset;
-            if (action === 'start') {
-                startTimer();
-            } else {
-                stopTimer();
-            }
-        });
-
-        modeButtons.addEventListener('click', handleMode);
-
-        function handleMode(event) {
-            const { mode } = event.target.dataset;
-            if (!mode) return;
-            switchMode(mode);
-            stopTimer();
-        }
-
-        function switchMode(mode) {
-            timer.mode = mode;
-            timer.remainingTime = {
-                total: timer[mode] * 60,
-                minutes: timer[mode],
-                seconds: 0,
-            };
-
-            document.querySelectorAll('button[data-mode]').forEach(e => e.classList.remove('active'));
-            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
-            document.body.style.backgroundColor = `var(--${mode})`;
-            document.getElementById('js-progress').setAttribute('max', timer.remainingTime.total);
-
-            updateClock();
-        }
-
-        function getRemainingTime(endTime) {
-            const currentTime = Date.parse(new Date());
-            const difference = endTime - currentTime;
-
-            const total = Number.parseInt(difference / 1000, 10);
-            const minutes = Number.parseInt((total / 60) % 60, 10);
-            const seconds = Number.parseInt(total % 60, 10);
-
-            return { total, minutes, seconds };
-        }
-
-        function startTimer() {
-            let { total } = timer.remainingTime;
-            const endTime = Date.parse(new Date()) + total * 1000;
-
-            if (timer.mode === 'pomodoro') timer.sessions++;
-
-            mainButton.dataset.action = 'stop';
-            mainButton.textContent = 'Stop';
-            mainButton.classList.add('active');
-
-            interval = setInterval(function () {
-                timer.remainingTime = getRemainingTime(endTime);
-                updateClock();
-                total = timer.remainingTime.total;
-
-                if (total <= 0) {
-                    clearInterval(interval);
-                    
-                    switch (timer.mode) {
-                        case 'pomodoro':
-                            if (timer.sessions % timer.longBreakInterval === 0) {
-                                switchMode('longBreak');
-                            } else {
-                                switchMode('shortBreak');
-                            }
-                            break;
-                        default:
-                            switchMode('pomodoro');
-                    }
-
-                    // Play sound on mode switch
-                    const soundElement = document.querySelector(`[data-sound="${timer.mode}"]`);
-                    if (soundElement) soundElement.play();
-
-                    // Display browser notification
-                    if (Notification.permission === 'granted') {
-                        const text = timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
-                        new Notification(text);
-                    }
-
-                    startTimer();
-                }
+        let timerInterval;
+        let seconds = 0;
+        document.getElementById('start').onclick = function() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(function() {
+                seconds++;
+                const hours = Math.floor(seconds / 3600);
+                const mins = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                document.querySelector('.timer').innerHTML = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
             }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(interval);
-            mainButton.dataset.action = 'start';
-            mainButton.textContent = 'Start';
-            mainButton.classList.remove('active');
-        }
-
-        function updateClock() {
-            const { remainingTime } = timer;
-            const minutes = `${remainingTime.minutes}`.padStart(2, '0');
-            const seconds = `${remainingTime.seconds}`.padStart(2, '0');
-
-            const min = document.getElementById('js-minutes');
-            const sec = document.getElementById('js-seconds');
-            min.textContent = minutes;
-            sec.textContent = seconds;
-
-            const text = timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
-            document.title = `${minutes}:${seconds} — ${text}`;
-
-            const progress = document.getElementById('js-progress');
-            progress.value = timer[timer.mode] * 60 - timer.remainingTime.total;
-        }
-
-        // Initialize autostart on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check & request notification permissions
-            if ('Notification' in window) {
-                if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-                    Notification.requestPermission().then(function (permission) {
-                        if (permission === 'granted') {
-                            new Notification('Awesome! You will be notified at the start of each session.');
-                        }
-                    });
-                }
-            }
-            
-            // Set the default pomodoro state
-            switchMode('pomodoro');
-            
-            // AUTOSTART FEATURE: Start the countdown timer as soon as the DOM loads
-            startTimer();
-        });
+        };
+        document.getElementById('stop').onclick = function() {
+            clearInterval(timerInterval);
+        };
+        document.getElementById('reset').onclick = function() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            document.querySelector('.timer').innerHTML = '00:00:00';
+        };
     </script>
 </body>
 </html>
